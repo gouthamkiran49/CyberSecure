@@ -4,6 +4,13 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
+
+$email = $_SESSION['email'];
+$username = explode('@', $email)[0];
+
+
+// You can change this per page / per module later
+$terminalCommand = "access --granted";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,6 +25,7 @@ if (!isset($_SESSION['user_id'])) {
 
     <!-- Main CSS -->
     <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
 
@@ -26,48 +34,58 @@ if (!isset($_SESSION['user_id'])) {
 
 <!-- NAVBAR -->
 <nav class="navbar">
-    <div class="logo">Cyber<span class="highlight">SECURE</span></div>
+    <a href="index.html" class="logo">Cyber<span class="highlight">SECURE</span></a>
     <ul class="nav-links">
-        <li><a href="dashboard.php">Dashboard</a></li>
-        <li><a href="#">Modules</a></li>
-        <li><a href="#">Profile</a></li>
+        <li><a href="#curriculum">Modules</a></li>
         <li><a href="logout.php" class="btn-nav">LOGOUT</a></li>
     </ul>
 </nav>
 
 <!-- DASHBOARD HERO -->
 <section class="hero">
-    <div class="container">
-
+    <div class="auth-wrapper">
+    <div class="dashboard-container">
         <div class="terminal-window">
-            <div class="terminal-header">
-                <span class="dot red"></span>
-                <span class="dot yellow"></span>
-                <span class="dot green"></span>
-                <span class="terminal-title">
-                    <?php echo htmlspecialchars($_SESSION['email']); ?>@cybersecure:~/dashboard
-                </span>
+
+                <!-- TERMINAL HEADER -->
+                <div class="terminal-header">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+
+                    <span class="terminal-title">
+                        <?php echo htmlspecialchars($_SESSION['email']); ?>@cybersecure:~/dashboard
+                    </span>
+                </div>
+
+                <!-- TERMINAL BODY -->
+                <div class="terminal-body">
+
+                    <p class="prompt-line">
+                        <span class="user">
+                            <?php echo htmlspecialchars($username); ?>
+                        </span>
+                        <span class="path">@node</span>:~$
+                        <?php echo htmlspecialchars($terminalCommand); ?>
+                    </p>
+
+                    <h1 class="glitch">ACCESS GRANTED</h1>
+
+                    <p class="typewriter">
+                        Welcome to the CyberSECURE learning console.
+                    </p>
+
+                    <p class="system-status">
+                        System Status:
+                        <span class="status-ok">AUTHENTICATED</span>
+                    </p>
+
+                </div>
+
             </div>
+            <!-- END TERMINAL WINDOW -->
 
-            <div class="terminal-body">
-                <p class="prompt-line">
-                    <span class="user">system</span>@<span class="path">auth</span>$ access --verify
-                </p>
-
-                <h1 class="glitch">ACCESS GRANTED</h1>
-
-                <p class="typewriter">
-                    Welcome to the CyberSECURE learning console.
-                </p>
-
-                <br>
-                <span class="system-status">
-                    System Status:
-                    <span class="status-ok">AUTHENTICATED</span>
-                </span>
-            </div>
         </div>
-
     </div>
 </section>
 
@@ -75,7 +93,7 @@ if (!isset($_SESSION['user_id'])) {
 <section class="section-dark">
     <div class="container">
 
-        <h2 class="section-title">YOUR <span class="highlight">MODULES</span></h2>
+       <section id="curriculum"> <h2 class="section-title">YOUR <span class="highlight">MODULES</span></h2>
         <p class="section-desc">Continue your investigation. Progress is saved automatically.</p>
 
         <div class="grid-cards">
