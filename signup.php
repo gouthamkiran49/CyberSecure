@@ -96,6 +96,11 @@
 
                 <form action="register_logic.php" method="POST">
                     <div class="form-group">
+
+<label class="prompt-line" style="display:block; margin-bottom:5px;">
+    Name
+</label>
+<input type="text" name="name" class="form-input" required>
                         <label class="prompt-line" style="display:block; margin-bottom:5px;">
                             Email
                         </label>
@@ -104,10 +109,11 @@
 
                     <div class="form-group">
                         <label class="prompt-line" style="display:block; margin-bottom:5px;">
-                            Password
+                           Password
                         </label>
                         <input type="password" name="password" class="form-input" placeholder="********" required>
                     </div>
+
 
                     <button type="submit" class="btn-primary" style="width:100%;">
                         REGISTER

@@ -6,34 +6,39 @@ session_start();
 require 'db_connect.php';
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    die("Invalid request");
+    header("Location: login.php");
+    exit();
 }
 
-$email = strtolower(trim($_POST['email'] ?? ''));
+$email    = strtolower(trim($_POST['email'] ?? ''));
 $password = $_POST['password'] ?? '';
 
 if ($email === '' || $password === '') {
-    die("Email or password missing");
+    die("Email and password required.");
 }
 
-$stmt = $conn->prepare("SELECT id, password FROM users WHERE email = ?");
+/* Fetch name also */
+$stmt = $conn->prepare(
+    "SELECT name, email, password FROM users WHERE email = ?"
+);
 $stmt->bind_param("s", $email);
 $stmt->execute();
-$stmt->store_result();
 
-if ($stmt->num_rows !== 1) {
-    die("Invalid credentials (email)");
+$result = $stmt->get_result();
+
+if ($result->num_rows !== 1) {
+    die("Invalid credentials");
 }
 
-$stmt->bind_result($id, $hashed_password);
-$stmt->fetch();
+$user = $result->fetch_assoc();
 
-if (!password_verify($password, $hashed_password)) {
-    die("Invalid credentials (password)");
+if (!password_verify($password, $user['password'])) {
+    die("Invalid credentials");
 }
 
-$_SESSION['user_id'] = $id;
-$_SESSION['email'] = $email;
+/* Store identity */
+$_SESSION['email'] = $user['email'];
+$_SESSION['name']  = $user['name'];
 
 header("Location: dashboard.php");
-exit;
+exit();
